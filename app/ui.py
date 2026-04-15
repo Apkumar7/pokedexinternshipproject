@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 
-from app.pokeapi import get_pokemon_data, get_random_pokemon
+from app.pokedex import Pokedex
 
 
 class PokeApp:
@@ -9,6 +9,7 @@ class PokeApp:
         self.root = tk.Tk()
         self.root.title("Pokedex Search")
         self.root.geometry("640x560")
+        self.pokedex = Pokedex()
         self._build_interface()
 
     def _build_interface(self):
@@ -38,26 +39,26 @@ class PokeApp:
         help_label = ttk.Label(frame, text="Enter a Pokemon name or ID, then click Search. Click Random to display a random Pokemon.")
         help_label.pack(pady=(12, 0))
 
-    def _display_result(self, pokemon_data):
-        if not pokemon_data:
+    def _display_result(self, pokemon):
+        if not pokemon:
             return
 
         lines = [
-            f"Name: {pokemon_data['name'].title()}",
-            f"ID: {pokemon_data['id']}",
-            f"Types: {', '.join(pokemon_data['types'])}",
-            f"Abilities: {', '.join(pokemon_data['abilities'])}",
-            f"Height: {pokemon_data['height']} dm",
-            f"Weight: {pokemon_data['weight']} hg",
+            f"Name: {pokemon.name.title()}",
+            f"ID: {pokemon.id}",
+            f"Types: {', '.join(pokemon.types)}",
+            f"Abilities: {', '.join(pokemon.abilities)}",
+            f"Height: {pokemon.height} dm",
+            f"Weight: {pokemon.weight} hg",
             "Stats:",
         ]
 
-        for stat_name, value in pokemon_data["stats"].items():
+        for stat_name, value in pokemon.stats.items():
             lines.append(f"  - {stat_name.title()}: {value}")
 
-        lines.append(f"Sprite URL: {pokemon_data['sprite_url']}")
+        lines.append(f"Sprite URL: {pokemon.sprite_url}")
         lines.append("Moves:")
-        lines.extend([f"  - {move}" for move in pokemon_data["moves"]])
+        lines.extend([f"  - {move}" for move in pokemon.moves])
 
         self.result_text.configure(state=tk.NORMAL)
         self.result_text.delete("1.0", tk.END)
@@ -71,8 +72,8 @@ class PokeApp:
             return
 
         try:
-            pokemon_data = get_pokemon_data(query)
-            self._display_result(pokemon_data)
+            pokemon = self.pokedex.search(query)
+            self._display_result(pokemon)
         except ValueError as error:
             messagebox.showerror("Pokemon not found", str(error))
         except Exception as error:
@@ -80,9 +81,9 @@ class PokeApp:
 
     def search_random(self):
         try:
-            pokemon_data = get_random_pokemon()
-            self.search_var.set(pokemon_data["name"])
-            self._display_result(pokemon_data)
+            pokemon = self.pokedex.random_pokemon()
+            self.search_var.set(pokemon.name)
+            self._display_result(pokemon)
         except Exception as error:
             messagebox.showerror("Error", f"Unable to retrieve random Pokemon:\n{error}")
 
