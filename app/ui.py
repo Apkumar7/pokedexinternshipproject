@@ -49,19 +49,16 @@ class PokeApp:
         style.configure("Normal.TLabel", font=("Segoe UI", 11), foreground="#7f8c8d")
         style.configure("TButton", font=("Segoe UI", 10, "bold"), padding=6)
         style.configure("TEntry", font=("Segoe UI", 10), padding=4)
-        style.configure("TFrame", background="#e6f7ff")
-        style.configure("Card.TFrame", background="white", relief="raised", borderwidth=2)
-        style.configure("TLabelframe", background="white", font=("Segoe UI", 12, "bold"))
-        style.configure("TLabelframe.Label", background="white", foreground="#2c3e50")
+        # Removed TFrame and Card.TFrame styles as using tk.Frame
 
     def _build_interface(self):
-        main_frame = ttk.Frame(self.root, padding=20, style="TFrame")
+        main_frame = tk.Frame(self.root, bg="#e6f7ff", padx=20, pady=20)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
         title = ttk.Label(main_frame, text="🔍 Pokedex Search", style="Title.TLabel")
         title.pack(pady=(0, 20))
 
-        search_frame = ttk.Frame(main_frame, style="TFrame")
+        search_frame = tk.Frame(main_frame, bg="#e6f7ff")
         search_frame.pack(fill=tk.X, pady=(0, 20))
 
         self.search_var = tk.StringVar()
