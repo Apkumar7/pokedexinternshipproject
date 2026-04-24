@@ -42,34 +42,28 @@ class PokeApp:
         self._configure_styles()
 
     def _configure_styles(self):
-        style = ttk.Style()
-        style.theme_use("clam")
-        style.configure("Title.TLabel", font=("Segoe UI", 28, "bold"), foreground="#2c3e50")
-        style.configure("Header.TLabel", font=("Segoe UI", 16, "bold"), foreground="#34495e")
-        style.configure("Normal.TLabel", font=("Segoe UI", 11), foreground="#7f8c8d")
-        style.configure("TButton", font=("Segoe UI", 10, "bold"), padding=6)
-        style.configure("TEntry", font=("Segoe UI", 10), padding=4)
-        # Removed TFrame and Card.TFrame styles as using tk.Frame
+        # Using default ttk styles to avoid configuration issues
+        pass
 
     def _build_interface(self):
         main_frame = tk.Frame(self.root, bg="#e6f7ff", padx=20, pady=20)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
-        title = ttk.Label(main_frame, text="🔍 Pokedex Search", style="Title.TLabel")
+        title = ttk.Label(main_frame, text="🔍 Pokedex Search")
         title.pack(pady=(0, 20))
 
         search_frame = tk.Frame(main_frame, bg="#e6f7ff")
         search_frame.pack(fill=tk.X, pady=(0, 20))
 
         self.search_var = tk.StringVar()
-        search_entry = ttk.Entry(search_frame, textvariable=self.search_var, width=50, style="TEntry")
+        search_entry = ttk.Entry(search_frame, textvariable=self.search_var, width=50)
         search_entry.pack(side=tk.LEFT, padx=(0, 10), fill=tk.X, expand=True)
         search_entry.bind("<Return>", lambda event: self.search_pokemon())
 
-        search_button = ttk.Button(search_frame, text="🔍 Search", command=self.search_pokemon, style="TButton")
+        search_button = ttk.Button(search_frame, text="🔍 Search", command=self.search_pokemon)
         search_button.pack(side=tk.LEFT, padx=(0, 5))
 
-        random_button = ttk.Button(search_frame, text="🎲 Random", command=self.search_random, style="TButton")
+        random_button = ttk.Button(search_frame, text="🎲 Random", command=self.search_random)
         random_button.pack(side=tk.LEFT)
 
         separator = ttk.Separator(main_frame, orient="horizontal")
@@ -78,7 +72,7 @@ class PokeApp:
         self.result_frame = tk.Frame(main_frame, bg="white", relief=tk.RAISED, bd=2)
         self.result_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        help_label = ttk.Label(main_frame, text="Enter a Pokemon name or ID and click Search, or click Random for a surprise!", style="Normal.TLabel")
+        help_label = ttk.Label(main_frame, text="Enter a Pokemon name or ID and click Search, or click Random for a surprise!")
         help_label.pack(pady=(10, 0))
 
     def _load_sprite(self, url):
