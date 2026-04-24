@@ -49,7 +49,7 @@ class PokeApp:
         main_frame = tk.Frame(self.root, bg="#e6f7ff", padx=20, pady=20)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
-        title = ttk.Label(main_frame, text="🔍 Pokedex Search")
+        title = tk.Label(main_frame, text="Pokedex Search", bg="#e6f7ff", fg="#2c3e50", font=("Segoe UI", 26, "bold"))
         title.pack(pady=(0, 20))
 
         search_frame = tk.Frame(main_frame, bg="#e6f7ff")
@@ -72,7 +72,7 @@ class PokeApp:
         self.result_frame = tk.Frame(main_frame, bg="white", relief=tk.RAISED, bd=2)
         self.result_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        help_label = ttk.Label(main_frame, text="Enter a Pokemon name or ID and click Search, or click Random for a surprise!")
+        help_label = tk.Label(main_frame, text="Enter a Pokemon name or ID and click Search, or click Random for a surprise!", bg="#e6f7ff", fg="#34495e", font=("Segoe UI", 11))
         help_label.pack(pady=(10, 0))
 
     def _load_sprite(self, url):
@@ -104,8 +104,7 @@ class PokeApp:
         # Theme based on primary type
         primary_type = pokemon.types[0] if pokemon.types else "normal"
         theme_color = TYPE_COLORS.get(primary_type, "#A8A878")
-        self.result_frame.configure(style="Card.TFrame")  # Reset to base
-        # Note: ttk doesn't easily allow dynamic background changes, so we'll use tk widgets for accents
+        # Note: result_frame is a tk.Frame, so no ttk style should be applied here
 
         left_panel = tk.Frame(self.result_frame, bg="white", relief=tk.RAISED, bd=2)
         left_panel.pack(side=tk.LEFT, padx=(0, 16), pady=8, anchor=tk.N)
