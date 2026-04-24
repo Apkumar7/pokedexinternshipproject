@@ -30,16 +30,36 @@ class Pokemon:
 
     @classmethod
     def from_api_data(cls, data: Dict[str, Any]) -> "Pokemon":
+        # Robust parsing to handle potential API response variations
+        types = []
+        if isinstance(data.get("types"), list):
+            types = [type_info.get("type", {}).get("name", "") for type_info in data.get("types", []) if isinstance(type_info, dict)]
+
+        abilities = []
+        if isinstance(data.get("abilities"), list):
+            abilities = [ability_info.get("ability", {}).get("name", "") for ability_info in data.get("abilities", []) if isinstance(ability_info, dict)]
+
+        stats = {}
+        if isinstance(data.get("stats"), list):
+            stats = {stat_info.get("stat", {}).get("name", ""): stat_info.get("base_stat", 0) for stat_info in data.get("stats", []) if isinstance(stat_info, dict)}
+
+        moves = []
+        if isinstance(data.get("moves"), list):
+            moves = [move_info.get("move", {}).get("name", "") for move_info in data.get("moves", []) if isinstance(move_info, dict)][:10]
+
+        sprites = data.get("sprites", {}) if isinstance(data.get("sprites"), dict) else {}
+        sprite_url = sprites.get("front_default") if isinstance(sprites, dict) else None
+
         return cls(
-            id=data.get("id", 0),
-            name=data.get("name", ""),
-            height=data.get("height", 0),
-            weight=data.get("weight", 0),
-            types=[type_info["type"]["name"] for type_info in data.get("types", [])],
-            abilities=[ability_info["ability"]["name"] for ability_info in data.get("abilities", [])],
-            stats={stat_info["stat"]["name"]: stat_info["base_stat"] for stat_info in data.get("stats", [])},
-            sprite_url=data.get("sprites", {}).get("front_default"),
-            moves=[move_info["move"]["name"] for move_info in data.get("moves", [])][:10],
+            id=data.get("id", 0) if isinstance(data.get("id"), int) else 0,
+            name=data.get("name", "") if isinstance(data.get("name"), str) else "",
+            height=data.get("height", 0) if isinstance(data.get("height"), int) else 0,
+            weight=data.get("weight", 0) if isinstance(data.get("weight"), int) else 0,
+            types=types,
+            abilities=abilities,
+            stats=stats,
+            sprite_url=sprite_url,
+            moves=moves,
             raw=data,
         )
 
