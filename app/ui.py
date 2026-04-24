@@ -35,7 +35,7 @@ class PokeApp:
         self.root.title("Pokedex Search")
         self.root.geometry("950x750")
         self.root.resizable(True, True)
-        self.root.configure(bg="#f0f0f0")
+        self.root.configure(bg="#e6f7ff")  # Light blue background
         self.pokedex = Pokedex()
         self.current_pokemon = None
         self._build_interface()
@@ -44,15 +44,15 @@ class PokeApp:
     def _configure_styles(self):
         style = ttk.Style()
         style.theme_use("clam")
-        style.configure("Title.TLabel", font=("Segoe UI", 28, "bold"), foreground="#333")
-        style.configure("Header.TLabel", font=("Segoe UI", 16, "bold"), foreground="#555")
-        style.configure("Normal.TLabel", font=("Segoe UI", 11), foreground="#666")
+        style.configure("Title.TLabel", font=("Segoe UI", 28, "bold"), foreground="#2c3e50")
+        style.configure("Header.TLabel", font=("Segoe UI", 16, "bold"), foreground="#34495e")
+        style.configure("Normal.TLabel", font=("Segoe UI", 11), foreground="#7f8c8d")
         style.configure("TButton", font=("Segoe UI", 10, "bold"), padding=6)
         style.configure("TEntry", font=("Segoe UI", 10), padding=4)
-        style.configure("TFrame", background="#f0f0f0")
+        style.configure("TFrame", background="#e6f7ff")
         style.configure("Card.TFrame", background="white", relief="raised", borderwidth=2)
         style.configure("TLabelframe", background="white", font=("Segoe UI", 12, "bold"))
-        style.configure("TLabelframe.Label", background="white", foreground="#333")
+        style.configure("TLabelframe.Label", background="white", foreground="#2c3e50")
 
     def _build_interface(self):
         main_frame = ttk.Frame(self.root, padding=20, style="TFrame")
@@ -125,18 +125,18 @@ class PokeApp:
             sprite_label = tk.Label(left_panel, image=sprite_image, bg="white")
             sprite_label.pack(pady=10, anchor=tk.N)
         else:
-            no_sprite = tk.Label(left_panel, text="No Image Available", bg="white", width=20, height=10, font=("Segoe UI", 10), fg="#999")
+            no_sprite = tk.Label(left_panel, text="No Image Available", bg="white", width=20, height=10, font=("Segoe UI", 10), fg="#7f8c8d")
             no_sprite.pack(pady=10, anchor=tk.N)
 
         right_panel = tk.Frame(self.result_frame, bg="white")
         right_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, pady=8)
 
-        name_label = tk.Label(right_panel, text=f"{pokemon.name.upper()} #{pokemon.id}", font=("Segoe UI", 18, "bold"), bg="white", fg="#333")
+        name_label = tk.Label(right_panel, text=f"{pokemon.name.upper()} #{pokemon.id}", font=("Segoe UI", 18, "bold"), bg="white", fg="#2c3e50")
         name_label.pack(anchor=tk.W, pady=(0, 8))
 
         type_frame = tk.Frame(right_panel, bg="white")
         type_frame.pack(anchor=tk.W, pady=(0, 12))
-        tk.Label(type_frame, text="Types:", font=("Segoe UI", 12, "bold"), bg="white", fg="#555").pack(side=tk.LEFT, padx=(0, 8))
+        tk.Label(type_frame, text="Types:", font=("Segoe UI", 12, "bold"), bg="white", fg="#34495e").pack(side=tk.LEFT, padx=(0, 8))
         for ptype in pokemon.types:
             color = TYPE_COLORS.get(ptype, "#888888")
             badge = tk.Label(
@@ -154,28 +154,28 @@ class PokeApp:
 
         info_frame = tk.Frame(right_panel, bg="white")
         info_frame.pack(anchor=tk.W, fill=tk.X, pady=(0, 12))
-        tk.Label(info_frame, text=f"Height: {pokemon.height} dm", font=("Segoe UI", 11), bg="white", fg="#666").pack(anchor=tk.W)
-        tk.Label(info_frame, text=f"Weight: {pokemon.weight} hg", font=("Segoe UI", 11), bg="white", fg="#666").pack(anchor=tk.W)
-        tk.Label(info_frame, text=f"Abilities: {', '.join(pokemon.abilities)}", font=("Segoe UI", 11), bg="white", fg="#666").pack(anchor=tk.W)
+        tk.Label(info_frame, text=f"Height: {pokemon.height} dm", font=("Segoe UI", 11), bg="white", fg="#7f8c8d").pack(anchor=tk.W)
+        tk.Label(info_frame, text=f"Weight: {pokemon.weight} hg", font=("Segoe UI", 11), bg="white", fg="#7f8c8d").pack(anchor=tk.W)
+        tk.Label(info_frame, text=f"Abilities: {', '.join(pokemon.abilities)}", font=("Segoe UI", 11), bg="white", fg="#7f8c8d").pack(anchor=tk.W)
 
-        stats_frame = tk.LabelFrame(right_panel, text="Stats", bg="white", fg="#333", font=("Segoe UI", 12, "bold"), padx=10, pady=10)
+        stats_frame = tk.LabelFrame(right_panel, text="Stats", bg="white", fg="#2c3e50", font=("Segoe UI", 12, "bold"), padx=10, pady=10)
         stats_frame.pack(anchor=tk.W, fill=tk.X, pady=(0, 12))
         for stat_name, value in pokemon.stats.items():
             stat_row = tk.Frame(stats_frame, bg="white")
             stat_row.pack(anchor=tk.W, fill=tk.X, pady=3)
-            tk.Label(stat_row, text=f"{stat_name.title()}:", width=10, font=("Segoe UI", 10), bg="white", fg="#555").pack(side=tk.LEFT)
-            tk.Label(stat_row, text=f"{value}", width=4, font=("Segoe UI", 10), bg="white", fg="#333").pack(side=tk.LEFT, padx=(8, 0))
+            tk.Label(stat_row, text=f"{stat_name.title()}:", width=10, font=("Segoe UI", 10), bg="white", fg="#34495e").pack(side=tk.LEFT)
+            tk.Label(stat_row, text=f"{value}", width=4, font=("Segoe UI", 10), bg="white", fg="#2c3e50").pack(side=tk.LEFT, padx=(8, 0))
             progress = tk.Canvas(stat_row, width=200, height=15, bg="white", highlightthickness=0)
             progress.pack(side=tk.LEFT, padx=(8, 0), fill=tk.X, expand=True)
             progress.create_rectangle(0, 0, min(value / 255 * 200, 200), 15, fill=theme_color, outline="")
 
-        moves_frame = tk.LabelFrame(right_panel, text="Moves", bg="white", fg="#333", font=("Segoe UI", 12, "bold"), padx=10, pady=10)
+        moves_frame = tk.LabelFrame(right_panel, text="Moves", bg="white", fg="#2c3e50", font=("Segoe UI", 12, "bold"), padx=10, pady=10)
         moves_frame.pack(anchor=tk.W, fill=tk.X)
         if pokemon.moves:
             moves_text = ", ".join(pokemon.moves[:8])
         else:
             moves_text = "No moves available"
-        tk.Label(moves_frame, text=moves_text, font=("Segoe UI", 10), bg="white", fg="#666", wraplength=500, justify=tk.LEFT).pack(anchor=tk.W)
+        tk.Label(moves_frame, text=moves_text, font=("Segoe UI", 10), bg="white", fg="#7f8c8d", wraplength=500, justify=tk.LEFT).pack(anchor=tk.W)
 
     def search_pokemon(self):
         query = self.search_var.get().strip()
