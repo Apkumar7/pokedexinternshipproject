@@ -78,7 +78,7 @@ class PokeApp:
         separator = ttk.Separator(main_frame, orient="horizontal")
         separator.pack(fill=tk.X, pady=(0, 20))
 
-        self.result_frame = ttk.Frame(main_frame, style="Card.TFrame")
+        self.result_frame = tk.Frame(main_frame, bg="white", relief=tk.RAISED, bd=2)
         self.result_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
         help_label = ttk.Label(main_frame, text="Enter a Pokemon name or ID and click Search, or click Random for a surprise!", style="Normal.TLabel")
@@ -117,16 +117,16 @@ class PokeApp:
         # Note: ttk doesn't easily allow dynamic background changes, so we'll use tk widgets for accents
 
         left_panel = tk.Frame(self.result_frame, bg="white", relief=tk.RAISED, bd=2)
-        left_panel.pack(side=tk.LEFT, padx=(0, 16), pady=8)
+        left_panel.pack(side=tk.LEFT, padx=(0, 16), pady=8, anchor=tk.N)
 
         sprite_image = self._load_sprite(pokemon.sprite_url)
         if sprite_image:
             self._sprite_image = sprite_image
             sprite_label = tk.Label(left_panel, image=sprite_image, bg="white")
-            sprite_label.pack(pady=10)
+            sprite_label.pack(pady=10, anchor=tk.N)
         else:
-            no_sprite = tk.Label(left_panel, text="No Image", bg="white", width=20, height=10, font=("Segoe UI", 10))
-            no_sprite.pack(pady=10)
+            no_sprite = tk.Label(left_panel, text="No Image Available", bg="white", width=20, height=10, font=("Segoe UI", 10), fg="#999")
+            no_sprite.pack(pady=10, anchor=tk.N)
 
         right_panel = tk.Frame(self.result_frame, bg="white")
         right_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, pady=8)
@@ -171,7 +171,10 @@ class PokeApp:
 
         moves_frame = tk.LabelFrame(right_panel, text="Moves", bg="white", fg="#333", font=("Segoe UI", 12, "bold"), padx=10, pady=10)
         moves_frame.pack(anchor=tk.W, fill=tk.X)
-        moves_text = ", ".join(pokemon.moves[:8])  # Show more moves
+        if pokemon.moves:
+            moves_text = ", ".join(pokemon.moves[:8])
+        else:
+            moves_text = "No moves available"
         tk.Label(moves_frame, text=moves_text, font=("Segoe UI", 10), bg="white", fg="#666", wraplength=500, justify=tk.LEFT).pack(anchor=tk.W)
 
     def search_pokemon(self):
